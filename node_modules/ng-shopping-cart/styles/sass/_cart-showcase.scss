@@ -1,0 +1,82 @@
+@import "variables";
+@import "mixins";
+
+.cart-showcase {
+  @include contain-margins();
+  @include clearfix();
+
+  & > .sc-item-container {
+    float: left;
+    position: relative;
+    height: 0;
+    margin: 0;
+
+    .sc-item-wrapper {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .default-sc-item {
+      position: absolute;
+      @include use('left', $sc-item-padding);
+      @include use('right', $sc-item-padding);
+      @include use('top', $sc-item-padding);
+      @include use('bottom', $sc-item-padding);
+      background: $image-bg no-repeat center;
+      background-size: $image-fit;
+
+      .default-sc-description {
+        @include use('padding', 1);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: $sc-description-bg;
+        color: $sc-description-text;
+        @include use('max-height', $sc-description-max-height);
+        @include use('min-height', $sc-description-min-height);
+
+        .default-sc-name {
+          @include use('font-size', 2);
+          position: absolute;
+          transform: translateY(-50%);
+          top: 50%;
+          @include use('left', $sc-description-margin);
+        }
+
+        .default-sc-price {
+          @include use('font-size', 2);
+          position: absolute;
+          transform: translateY(-50%);
+          top: 50%;
+          @include use('right', $sc-description-margin);
+        }
+      }
+    }
+
+    @for $r from 2 through length($ratios) {
+      &.sc-ratio-#{$r}-1 {
+        .default-sc-item {
+          .default-sc-description {
+            max-height: if($r > 3, 20%, 30%);
+            @include use('padding', if($r > 2, 0, 1));
+          }
+        }
+      }
+    }
+  }
+}
+
+$used: ();
+@for $r from 1 through $ratios {
+  @for $ir from 1 through $ratios {
+    $ratio: $r/$ir;
+    @if (index($used, $ratio) == null) {
+      $used: append($used, $ratio);
+      @include showcase-ratio($r, $ir)
+    }
+  }
+}

@@ -1,0 +1,97 @@
+@import "variables";
+
+@mixin contain-margins() {
+  &:before, &:after {
+    content: ' ';
+    display: table;
+  }
+}
+
+@mixin clearfix() {
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin make-row() {
+  @include contain-margins();
+  @include clearfix()
+}
+
+@mixin rem-fallback($prop, $rems) {
+  #{$prop}: #{$rems * $base-font}px;
+  #{$prop}: #{$rems}rem;
+}
+
+@mixin use($prop, $value) {
+  @if(unitless($value)) {
+    @include rem-fallback($prop, $value);
+  } @else {
+    #{$prop}: #{$value};
+  }
+}
+
+@mixin make-button() {
+  font-weight: normal;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: $button-text;
+  border: solid 1px $button-border;
+  @include use('border-radius', $button-radius);
+  background-color: $button-color;
+  text-transform: none;
+  overflow: visible;
+  margin: 0;
+  @include use('font-size', 1);
+  @include use('padding-top', 0.5);
+  @include use('padding-bottom', 0.5);
+  @include use('padding-left', 0.75);
+  @include use('padding-right', 0.75);
+
+  &:not(.disabled):not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: darken($button-color, 10);
+  }
+
+  &:disabled {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    opacity: 0.65;
+  }
+}
+
+@mixin media-up($brk, $brk-points: $breakpoints) {
+  @media (min-width: map_get($brk-points, $brk)) {
+    @content;
+  }
+}
+
+@mixin showcase-ratio($width, $height, $generate: $generate-ratios) {
+  .cart-showcase > .sc-item-container {
+    @each $name, $value in $breakpoints {
+      @media (min-width: $value) {
+        @for $i from 1 through $columns {
+          &.sc-container-#{$name}-#{$i} {
+            $size: percentage($i / $columns);
+            width: $size;
+            padding: $size 0 0;
+            box-sizing: border-box;
+
+            // If you turned off ratio generation and want to generate just a few of your own
+            // pass true in the last parameter to override the global variable
+            @if ($generate) {
+              $ratio: $width/$height;
+              &.sc-ratio-#{$width}-#{$height} {
+                padding: percentage($i / $columns * ($height/$width)) 0 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

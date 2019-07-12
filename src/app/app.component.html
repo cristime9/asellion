@@ -1,0 +1,24 @@
+<!-- nav -->
+<nav class="navbar navbar-expand" id="dark-navig" *ngIf="currentUser">
+        <div class="navbar-header">    
+                <img class="navbar-brand" src="https://www.covestro.com/-/media/covestro/shared-library/logo/covestro-logo.png?la=en&hash=303473A0ACFF81948239C5874613543198E3054E" />
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                      </button></div>
+            <ul class="nav navbar-nav ml-auto">
+            <li><a class="nav-item nav-link" routerLink="/">Home</a></li>
+        <li><a class="nav-item nav-link" (click)="logout()">Logout</a></li>
+            </ul>
+</nav>
+
+<!-- main content container -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                <alert></alert>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

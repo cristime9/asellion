@@ -1,0 +1,27 @@
+<h1>Ahoy {{currentUser.firstName}} {{currentUser.lastName}}!</h1>
+<p>Hey you're logged in my app!!</p>
+<h3>Ok now I should show you a few products:</h3>
+<div class="row">
+<div *ngFor="let product of products" class="col-lg-6 product-box">
+ 
+    <h3>
+      <a [title]="product.name + ' details'">
+        {{ product.name }}
+      </a>
+    </h3>
+    <h5 *ngIf="product.currentPrice" class="price">
+      Price: ${{product.currentPrice}}
+    </h5>
+    <p *ngIf="product.description">
+      Description: {{ product.description }}
+    </p>
+    <p *ngIf="product.lastUpdate">
+      Update: {{ product.lastUpdate }}
+    </p>
+   
+    <button>
+      Add to cart
+    </button>
+   
+  </div>
+</div>
